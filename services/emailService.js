@@ -22,7 +22,7 @@ const sendAffirmationEmail = async (subscriber, affirmation) => {
                     </p>
                 </div>
                 <p style="text-align: center; margin-top: 20px; color: #666; font-size: 12px;">
-                    To unsubscribe, click <a href="http://localhost:${process.env.PORT}/unsubscribe/${subscriber.email}">here</a>
+                    To unsubscribe, click <a href="https://daily-affirmation-bot.vercel.app/unsubscribe/${subscriber.email}">here</a>
                 </p>
             </div>
         `
