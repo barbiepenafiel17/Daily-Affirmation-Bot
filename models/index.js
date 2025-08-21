@@ -1,31 +1,44 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const subscriberSchema = new mongoose.Schema({
+const Subscriber = sequelize.define('Subscriber', {
     email: {
-        type: String,
-        required: true,
+        type: DataTypes.STRING,
+        allowNull: false,
         unique: true,
-        trim: true,
-        lowercase: true
+        validate: {
+            isEmail: true
+        }
     },
     createdAt: {
-        type: Date,
-        default: Date.now
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
     }
+}, {
+    tableName: 'subscribers'
 });
 
-const sentAffirmationSchema = new mongoose.Schema({
+const SentAffirmation = sequelize.define('SentAffirmation', {
     text: {
-        type: String,
-        required: true
+        type: DataTypes.TEXT,
+        allowNull: false
     },
     sentAt: {
-        type: Date,
-        default: Date.now
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
     }
+}, {
+    tableName: 'sent_affirmations'
 });
 
-const Subscriber = mongoose.model('Subscriber', subscriberSchema);
-const SentAffirmation = mongoose.model('SentAffirmation', sentAffirmationSchema);
+// Sync all models with database
+(async () => {
+    try {
+        await sequelize.sync();
+        console.log('Database & tables created!');
+    } catch (error) {
+        console.error('Error syncing database:', error);
+    }
+})();
 
 module.exports = { Subscriber, SentAffirmation };

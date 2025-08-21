@@ -1,13 +1,14 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const routes = require('./routes');
 const { sendDailyAffirmations } = require('./services/affirmationService');
+const sequelize = require('./config/database');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(express.static('public'));
 
 // Routes
 app.use('/', routes);
@@ -28,24 +29,15 @@ app.post('/api/send-affirmations', async (req, res) => {
     }
 });
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
-    authSource: 'admin',
-    authMechanism: 'SCRAM-SHA-1'
-})
-    .then(() => {
-        console.log('Connected to MongoDB');
-        console.log('Database Name:', mongoose.connection.name);
-        console.log('Host:', mongoose.connection.host);
-    })
-    .catch(err => {
-        console.error('MongoDB connection error:', err);
-        console.error('Connection string:', process.env.MONGO_URI.replace(/\/\/[^:]+:[^@]+@/, '//<username>:<password>@'));
+// Database connection testing moved to config/database.js
+
+const PORT = process.env.PORT || 3000;
+
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
     });
+}
 
 // Export the Express app for Vercel
 module.exports = app;

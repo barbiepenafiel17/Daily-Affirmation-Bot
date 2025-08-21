@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Subscriber, SentAffirmation } = require('../models');
+const { Subscriber, SentAffirmation } = require('../models/index.js');
 const { sendAffirmationEmail } = require('./emailService');
 
 const fetchAffirmation = async () => {

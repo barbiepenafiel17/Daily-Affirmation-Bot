@@ -1,5 +1,5 @@
 const express = require('express');
-const { Subscriber } = require('../models');
+const { Subscriber } = require('../models/index.js');
 const router = express.Router();
 
 // POST /subscribe
